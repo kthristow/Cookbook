@@ -8,3 +8,14 @@ export function getUserData(){
 export function clearUserData(){
     localStorage.removeItem('userData');
 }
+
+
+export function createSubmitHandler(callback, ...fields) {
+    return function(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+       const data= fields.reduce((a,c) => Object.assign(a, {[c]: formData.get(c).trim()}), {});
+        callback(data,event);
+    };
+}
