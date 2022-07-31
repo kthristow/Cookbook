@@ -1,24 +1,33 @@
-import * as api from './api.js';
+import { getUserData } from "../util.js";
 
-
-export const login = api.login;
-export const register = api.register;
-export const logout = api.logout;
-
-const endpoints = {
+export const endpoints = {
     recipes: '/classes/Recipe',
+    recipeDetails: (id) => `/classes/Recipe/${id}?include=owner`,
+    recipeByID:'/classes/Recipe/',
+    comments: '/classes/Comment',
+    commentsByRecipe: (recipeId) => `/classes/Comment?where=${createPointerQuery('recipe','Recipe',recipeId)}&include=owner`
 
+};
+
+export function createPointerQuery(propName,className, objectId) {
+    return createQuery({[propName]: createPointer(className,objectId)});
 }
 
-export async function getRecipes() {
-    return api.get(endpoints.recipes);
+export function createQuery(query) {
+   return  encodeURIComponent(JSON.stringify(query))
 }
 
-export async function createRecipe(recipe, ownerId) {
-     recipe.owner={
+export function createPointer(className, objectId) {
+    return {
         __type:'Pointer',
-        className:'_User',
-        objectId:ownerId
-    };
-    return api.post(endpoints.recipes,recipe);
+        className,
+        objectId
+    }
+}
+
+export function addOwner(record) {
+    const {id} = getUserData();
+    record.owner = createPointer('_User', id);
+
+    return record;
 }
