@@ -1,7 +1,8 @@
 import { getUserData } from "../util.js";
 
 export const endpoints = {
-    recipes: '/classes/Recipe',
+    recent:'/classes/Recipe?limit=3',
+    recipes:(query) => `/classes/Recipe?where=${createQuery(query)}`,
     recipeDetails: (id) => `/classes/Recipe/${id}?include=owner`,
     recipeByID:'/classes/Recipe/',
     comments: '/classes/Comment',

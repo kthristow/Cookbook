@@ -3,8 +3,24 @@ import { endpoints,addOwner } from './data.js';
 
 
 
-export async function getRecipes() {
-    return api.get(endpoints.recipes);
+export async function getRecipes(page, query) {
+    if(query){
+        query = {
+            name:{
+                $text:{
+                    $search: query
+                }
+            }
+        };
+    }
+
+
+    return api.get(endpoints.recipes());
+}
+
+
+export async function getRecentRecipes() {
+    return api.get(endpoints.recent);
 }
 
 export async function getRecipeById(id) {

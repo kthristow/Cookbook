@@ -27,10 +27,9 @@ export function loginPage(ctx) {
             if(data.username == '' || data.password == ''){
                 throw{
                     message:'Please fill all fields!',
-                    errors: {
-                        name:true,
-                        password:true
-                    }
+                    username:true,
+                    password:true
+                    
                 };
                 
             }
